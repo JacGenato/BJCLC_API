@@ -25,5 +25,11 @@ namespace BJCLC_API.Controllers
         {
             return await _iPostRepository.GetById(id);
         }
+
+        [HttpGet("Search")]
+        public async Task<List<Post>> Search(string keyword)
+        {
+            return await _iPostRepository.Search(keyword);
+        }
     }
 }

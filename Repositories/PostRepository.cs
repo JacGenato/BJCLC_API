@@ -8,7 +8,7 @@ namespace BJCLC_API.Repositories
     {
         Task<List<Post>> Get();
         Task<Post> GetById(int id);
-        Task<Post[]> Search(string searchKey);
+        Task<List<Post>> Search(string searchKey);
         Task Create(Post post);
         Task Update(Post post);
 
@@ -36,9 +36,9 @@ namespace BJCLC_API.Repositories
             return await dataContext.Posts.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<Post[]> Search(string searchKey)
+        public Task<List<Post>> Search(string searchKey)
         {
-            throw new NotImplementedException();
+            return dataContext.Posts.Where(c => c.Title.ToLower().Contains(searchKey.ToLower())).ToListAsync();
         }
 
         public Task Update(Post post)
