@@ -14,6 +14,7 @@ namespace BJCLC_API.Controllers
             _iPostRepository = iPostRepository;
         }
 
+
         [HttpGet("GetPosts")]
         public async Task<IEnumerable<Post>> Get()
         {
@@ -30,6 +31,25 @@ namespace BJCLC_API.Controllers
         public async Task<List<Post>> Search(string keyword)
         {
             return await _iPostRepository.Search(keyword);
+        }
+
+        [HttpPost("Create")]
+        public async Task CreatePost(Post post)
+        {
+            await _iPostRepository.Create(post);
+        }
+
+
+        [HttpPut("UpdatePost")]
+        public async Task<Post> UpdatePost(Post post)
+        {
+           return await _iPostRepository.Update(post);
+        }
+
+        [HttpDelete("DeletePost")]
+        public async Task DeletePost(int id)
+        {
+            await _iPostRepository.Delete(id);
         }
     }
 }

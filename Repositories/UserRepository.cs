@@ -10,6 +10,7 @@ namespace BJCLC_API.Repositories
         Task<User[]> Search(string searchKey);
         Task Create(User user);
         Task Update(User user);
+        Task Delete(int id);
 
     }
     public class UserRepository : IUserRepository
@@ -50,6 +51,15 @@ namespace BJCLC_API.Repositories
             existingUser.MobileNumber = user.MobileNumber;
 
             await dataContext.SaveChangesAsync();
+        }
+        public async Task Delete(int id)
+        {
+            var existingUser = await dataContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            dataContext.Remove(existingUser);
+
+            await dataContext.SaveChangesAsync();
+
         }
     }
 }

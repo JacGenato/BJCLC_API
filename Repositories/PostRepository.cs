@@ -10,7 +10,8 @@ namespace BJCLC_API.Repositories
         Task<Post> GetById(int id);
         Task<List<Post>> Search(string searchKey);
         Task Create(Post post);
-        Task Update(Post post);
+        Task<Post> Update(Post post);
+        Task Delete(int id);
 
     }
     public class PostRepository : IPostRepository
@@ -21,9 +22,10 @@ namespace BJCLC_API.Repositories
         {
             this.dataContext = dataContext;
         }
-        public Task Create(Post post)
+        public async Task Create(Post post)
         {
-            throw new NotImplementedException();
+            await dataContext.Posts.AddAsync(post);
+            await dataContext.SaveChangesAsync();
         }
 
         public async Task<List<Post>> Get()
@@ -41,9 +43,28 @@ namespace BJCLC_API.Repositories
             return dataContext.Posts.Where(c => c.Title.ToLower().Contains(searchKey.ToLower())).ToListAsync();
         }
 
-        public Task Update(Post post)
+        public async Task<Post> Update(Post post)
         {
-            throw new NotImplementedException();
+            var postUpdate = await dataContext.Posts.FirstOrDefaultAsync(c => c.Id == post.Id);
+
+            postUpdate.Title = post.Title;
+            postUpdate.Description = post.Description;
+            postUpdate.Content = post.Content;
+            postUpdate.CoverImage = post.CoverImage;
+
+            dataContext.Posts.Update(postUpdate);
+
+            await dataContext.SaveChangesAsync();
+
+            return postUpdate;
         }
+
+        public async Task Delete(int id)
+        {
+            var post = await dataContext.Posts.FirstOrDefaultAsync(c => c.Id == id);
+            dataContext.Posts.Remove(post); 
+            await dataContext.SaveChangesAsync();
+        }
+
     }
 }

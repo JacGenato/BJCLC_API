@@ -28,7 +28,7 @@ namespace BJCLC_API.Controllers
            
         }
 
-        [HttpPost("CreateUser")]
+        [HttpPost("Create")]
         public async Task Create(User user)
         {
             await _iUserRpository.Create(user);
@@ -38,6 +38,12 @@ namespace BJCLC_API.Controllers
         public async Task Update(User user)
         {
             await _iUserRpository.Update(user);
+        }
+
+        [HttpDelete("DeleteUser")]
+        public async Task Delete(int id)
+        {
+            await _iUserRpository.Delete(id);
         }
     }
 }
